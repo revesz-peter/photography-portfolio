@@ -5,17 +5,9 @@ export type Photo = {
   format: Format
   orientation: "portrait" | "landscape"
   // Add your scans to apps/web/public/photos and point `src` at them,
-  // e.g. "/photos/portrait-01.jpg". Frames without `src` render as empty cards.
+  // e.g. "/photos/01.jpg". Frames without `src` render as empty cards.
   src?: string
   alt?: string
-  caption?: string
-}
-
-export type Series = {
-  slug: string
-  title: string
-  description: string
-  photos: Photo[]
 }
 
 // Long edge / short edge of each negative.
@@ -31,40 +23,14 @@ export function aspectRatio(photo: Photo) {
   return photo.orientation === "landscape" ? long / short : short / long
 }
 
-function roll(
-  slug: string,
-  format: Format,
-  orientations: Photo["orientation"][]
-): Photo[] {
-  return orientations.map((orientation, i) => ({
-    id: `${slug}-${String(i + 1).padStart(2, "0")}`,
-    format,
-    orientation,
-  }))
-}
-
 const P = "portrait"
 const L = "landscape"
 
-export const series: Series[] = [
-  {
-    slug: "portraits",
-    title: "Portraits",
-    description: "People, in available light.",
-    photos: roll("portraits", "35mm", [P, P, P, P, P, P]),
-  },
-  {
-    slug: "35mm",
-    title: "35mm",
-    description: "Streets and in-between moments.",
-    photos: roll("35mm", "35mm", [L, L, P, L, L, P, L, L]),
-  },
-]
-
-export const featured: Photo[] = roll("featured", "35mm", [
-  P, L, L, P, P, L, P, L, L, P, P, L,
-])
-
-export function getSeries(slug: string) {
-  return series.find((s) => s.slug === slug)
-}
+// The slideshow, in order.
+export const photos: Photo[] = ([P, L, L, P, L, P, L, L, P, L] as const).map(
+  (orientation, i) => ({
+    id: String(i + 1).padStart(2, "0"),
+    format: "35mm",
+    orientation,
+  })
+)
