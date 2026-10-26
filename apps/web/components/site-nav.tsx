@@ -3,6 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { MenuIcon, XIcon } from "lucide-react"
 
 import { cn } from "@workspace/ui/lib/utils"
 import { site } from "@/lib/site"
@@ -32,12 +33,17 @@ function SiteNav() {
           </Link>
           <button
             type="button"
-            className={cn(linkText, "lg:hidden")}
+            className="-m-2 p-2 transition-opacity hover:opacity-70 lg:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="site-menu"
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? "Close" : "Menu"}
+            {open ? (
+              <XIcon className="size-5" strokeWidth={1.75} />
+            ) : (
+              <MenuIcon className="size-5" strokeWidth={1.75} />
+            )}
           </button>
         </div>
 
