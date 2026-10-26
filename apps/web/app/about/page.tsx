@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 
 import { Frame } from "@/components/frame"
 import type { Photo } from "@/lib/photos"
-import { site } from "@/lib/site"
 
 export const metadata: Metadata = {
   title: "About / Contact",
@@ -21,17 +20,6 @@ export default function Page() {
           About
         </h1>
         <p>I am currently based in Budapest.</p>
-        <p className="mt-4">
-          <span aria-label="Contact">✉️</span> Instagram:{" "}
-          <a
-            href={site.instagram.url}
-            target="_blank"
-            rel="noreferrer"
-            className="font-semibold underline decoration-1 underline-offset-4 hover:no-underline"
-          >
-            @{site.instagram.handle}
-          </a>
-        </p>
       </div>
     </div>
   )
