@@ -50,7 +50,11 @@ export default function RootLayout({
             <nav className="flex gap-3">
               <Overlay label="Information">
                 <div className="grid gap-y-4 sm:grid-cols-[345px_auto] sm:gap-x-3">
-                  <p>I am currently based in Budapest.</p>
+                  <p>
+                    I am currently based in Budapest.
+                    <br />
+                    All images are shot on 35mm film.
+                  </p>
                   <p>
                     <a
                       href={site.instagram.url}
