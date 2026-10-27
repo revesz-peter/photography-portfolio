@@ -4,9 +4,10 @@ import { Geist, Geist_Mono } from "next/font/google"
 
 import "@workspace/ui/globals.css"
 import { ContactForm } from "@/components/contact-form"
+import { IndexOverlay } from "@/components/index-overlay"
 import { Overlay } from "@/components/overlay"
 import { ThemeProvider } from "@/components/theme-provider"
-import { photos } from "@/lib/photos"
+import { photos, projects } from "@/lib/photos"
 import { site } from "@/lib/site"
 import { cn } from "@workspace/ui/lib/utils"
 
@@ -61,6 +62,7 @@ export default function RootLayout({
                   </p>
                 </div>
               </Overlay>
+              <IndexOverlay projects={projects} />
               <Overlay label="Email">
                 <ContactForm />
               </Overlay>
