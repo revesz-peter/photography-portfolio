@@ -3,7 +3,7 @@ import Image from "next/image"
 import { cn } from "@workspace/ui/lib/utils"
 import { aspectRatio, type Photo } from "@/lib/photos"
 
-// A single photo at its own proportions, or an empty card until a scan is added.
+// A single photo at its own proportions and colors, or an empty card until a scan is added.
 function Frame({
   photo,
   sizes,
@@ -28,7 +28,7 @@ function Frame({
           sizes={sizes}
           preload={preload}
           placeholder="blur"
-          className="object-cover grayscale"
+          className="object-cover"
         />
       )}
     </div>
