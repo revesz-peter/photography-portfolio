@@ -8,11 +8,13 @@ function Frame({
   photo,
   sizes,
   preload,
+  loading,
   className,
 }: {
   photo: Photo
   sizes: string
   preload?: boolean
+  loading?: "eager" | "lazy"
   className?: string
 }) {
   return (
@@ -27,6 +29,7 @@ function Frame({
           fill
           sizes={sizes}
           preload={preload}
+          loading={preload ? undefined : loading}
           placeholder="blur"
           className="object-cover"
         />
