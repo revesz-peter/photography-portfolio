@@ -59,9 +59,6 @@ export default function RootLayout({
                   </p>
                 </div>
               </Overlay>
-              <a href={site.instagram.url} target="_blank" rel="noreferrer">
-                Instagram
-              </a>
               <Overlay label="Email">
                 <ContactForm />
               </Overlay>

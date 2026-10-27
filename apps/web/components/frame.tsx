@@ -3,7 +3,7 @@ import Image from "next/image"
 import { cn } from "@workspace/ui/lib/utils"
 import { aspectRatio, type Photo } from "@/lib/photos"
 
-// A single photo at its negative's proportions, or an empty card until a scan is added.
+// A single photo at its own proportions, or an empty card until a scan is added.
 function Frame({
   photo,
   sizes,
@@ -20,13 +20,14 @@ function Frame({
       className={cn("relative w-full overflow-hidden bg-muted", className)}
       style={{ aspectRatio: aspectRatio(photo) }}
     >
-      {photo.src && (
+      {photo.image && (
         <Image
-          src={photo.src}
+          src={photo.image}
           alt={photo.alt ?? ""}
           fill
           sizes={sizes}
           preload={preload}
+          placeholder="blur"
           className="object-cover grayscale"
         />
       )}

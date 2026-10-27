@@ -1,36 +1,31 @@
-export type Format = "35mm" | "6x6" | "6x7" | "4x5"
+import type { StaticImageData } from "next/image"
 
 export type Photo = {
   id: string
-  format: Format
-  orientation: "portrait" | "landscape"
-  // Add your scans to apps/web/public/photos and point `src` at them,
-  // e.g. "/photos/01.jpg". Frames without `src` render as empty cards.
-  src?: string
+  // Put scans in apps/web/photos and import them at the top of this file:
+  //   import p01 from "@/photos/01.jpg"
+  // then set `image: p01`. The card takes the image's own shape.
+  image?: StaticImageData
+  // Shape of the empty card until an image is added, as width / height.
+  ratio?: number
   alt?: string
 }
 
-// Long edge / short edge of each negative.
-const ratios: Record<Format, [number, number]> = {
-  "35mm": [3, 2],
-  "6x6": [1, 1],
-  "6x7": [7, 6],
-  "4x5": [5, 4],
-}
-
 export function aspectRatio(photo: Photo) {
-  const [long, short] = ratios[photo.format]
-  return photo.orientation === "landscape" ? long / short : short / long
+  if (photo.image) return photo.image.width / photo.image.height
+  return photo.ratio ?? 3 / 2
 }
-
-const P = "portrait"
-const L = "landscape"
 
 // The slideshow, in order.
-export const photos: Photo[] = ([P, L, L, P, L, P, L, L, P, L] as const).map(
-  (orientation, i) => ({
-    id: String(i + 1).padStart(2, "0"),
-    format: "35mm",
-    orientation,
-  })
-)
+export const photos: Photo[] = [
+  { id: "01", ratio: 3 / 4 },
+  { id: "02", ratio: 3 / 2 },
+  { id: "03", ratio: 1 },
+  { id: "04", ratio: 2 / 3 },
+  { id: "05", ratio: 4 / 3 },
+  { id: "06", ratio: 4 / 5 },
+  { id: "07", ratio: 3 / 2 },
+  { id: "08", ratio: 1 },
+  { id: "09", ratio: 3 / 4 },
+  { id: "10", ratio: 3 / 2 },
+]
