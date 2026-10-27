@@ -17,9 +17,11 @@ const fontMono = Geist_Mono({
   variable: "--font-mono",
 })
 
+// Link previews (iMessage, WhatsApp, Slack…) show only the Instagram handle.
 export const metadata: Metadata = {
-  title: `${site.name} | ${site.tagline}`,
-  description: site.description,
+  title: site.name,
+  openGraph: { title: site.instagram.handle },
+  twitter: { card: "summary", title: site.instagram.handle },
 }
 
 export default function RootLayout({
