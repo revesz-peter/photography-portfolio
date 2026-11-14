@@ -18,8 +18,18 @@ function slideSizes(photo: Photo) {
 }
 
 // One photo at a time: click the right half for the next, the left half for the previous.
-function Slideshow({ photos }: { photos: Photo[] }) {
-  const [index, setIndex] = React.useState(0)
+// `start` picks the first slide; `onIndexChange` reports the current one.
+function Slideshow({
+  photos,
+  start = 0,
+  onIndexChange,
+}: {
+  photos: Photo[]
+  start?: number
+  onIndexChange?: (index: number) => void
+}) {
+  const ref = React.useRef<HTMLDivElement>(null)
+  const [index, setIndex] = React.useState(start)
   const count = photos.length
 
   const go = React.useCallback(
@@ -27,9 +37,13 @@ function Slideshow({ photos }: { photos: Photo[] }) {
     [count]
   )
 
+  React.useEffect(() => onIndexChange?.(index), [index, onIndexChange])
+
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (document.querySelector("dialog[open]")) return
+      // Arrow keys belong to whatever is on top: skip if a dialog is open that isn't ours.
+      const dialog = document.querySelector("dialog[open]")
+      if (dialog && !dialog.contains(ref.current)) return
       if (event.key === "ArrowLeft") go(-1)
       if (event.key === "ArrowRight") go(1)
     }
@@ -44,7 +58,7 @@ function Slideshow({ photos }: { photos: Photo[] }) {
   }
 
   return (
-    <div className="relative h-full" style={{ containerType: "size" }}>
+    <div ref={ref} className="relative h-full" style={{ containerType: "size" }}>
       {photos.map((photo, i) =>
         mounted.has(i) ? (
           // Stacked slides cross-fade; only the current one is visible.
@@ -65,7 +79,7 @@ function Slideshow({ photos }: { photos: Photo[] }) {
               <Frame
                 photo={photo}
                 sizes={slideSizes(photo)}
-                preload={i === 0}
+                preload={i === start}
                 loading="eager"
               />
             </div>
