@@ -49,11 +49,16 @@ export default function RootLayout({
             </Link>
             <nav className="flex gap-3">
               <Overlay label="Information">
-                <div className="grid gap-y-4 sm:grid-cols-[345px_auto] sm:gap-x-3">
+                {/* Top-left: bio, then handle and location beside it (stacked on phones). */}
+                <div className="grid gap-y-4 sm:grid-cols-[360px_auto] sm:gap-x-6">
                   <p>
-                    I am currently based in Budapest.
-                    <br />
-                    All images are shot on 35mm film.
+                    Péter Révész (b. 2000) is a photographer whose work is
+                    driven by instinct, taste and tension. Raw, sensual and
+                    edgy, it moves between stillness and restlessness,
+                    intimacy and distance, softness and grit. His visual
+                    language is rooted in vulnerability and a sense of the
+                    untamed, shaped by a childhood spent among horses and open
+                    land. All images are shot on 35mm film.
                   </p>
                   <p>
                     <a
@@ -63,6 +68,8 @@ export default function RootLayout({
                     >
                       @{site.instagram.handle}
                     </a>
+                    <br />
+                    Budapest, Hungary
                   </p>
                 </div>
               </Overlay>
