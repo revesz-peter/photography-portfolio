@@ -4,8 +4,6 @@ import places13A from "@/photos/places/13A.jpg"
 import places15A from "@/photos/places/15A.jpg"
 import places18A from "@/photos/places/18A.jpg"
 import places26A from "@/photos/places/26A.jpg"
-import places27A from "@/photos/places/27A.jpg"
-import places4738 from "@/photos/places/IMG_4738.jpg"
 import places4752 from "@/photos/places/IMG_4752.jpg"
 import places4765 from "@/photos/places/IMG_4765.jpg"
 
@@ -69,16 +67,6 @@ export const projects: Project[] = [
         id: "26A",
         image: places26A,
         alt: "Rocks and small boats on glittering water",
-      },
-      {
-        id: "27A",
-        image: places27A,
-        alt: "A green cliff above a rocky shore with swimmers",
-      },
-      {
-        id: "IMG_4738",
-        image: places4738,
-        alt: "Doves in a sunlit courtyard with a fountain and a palm",
       },
       {
         id: "IMG_4752",
