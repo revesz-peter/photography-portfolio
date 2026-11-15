@@ -51,15 +51,18 @@ export default function RootLayout({
               <Overlay label="Information">
                 {/* Top-left: bio, then handle and location beside it (stacked on phones). */}
                 <div className="grid gap-y-4 sm:grid-cols-[360px_auto] sm:gap-x-6">
-                  <p>
-                    Péter Révész (b. 2000) is a photographer whose work is
-                    driven by instinct, taste and tension. Raw, sensual and
-                    edgy, it moves between stillness and restlessness,
-                    intimacy and distance, softness and grit. His visual
-                    language is rooted in vulnerability and a sense of the
-                    untamed, shaped by a childhood spent among horses and open
-                    land. All images are shot on 35mm film.
-                  </p>
+                  <div className="grid gap-y-4">
+                    <p>
+                      Péter Révész (b. 2000) is a Hungarian photographer whose
+                      work is driven by instinct, taste and tension. Raw,
+                      sensual and edgy, it moves between stillness and
+                      restlessness, intimacy and distance, softness and grit.
+                      His visual language is rooted in vulnerability and a
+                      sense of the untamed, shaped by a childhood spent among
+                      horses and open land.
+                    </p>
+                    <p>All images are shot on 35mm film.</p>
+                  </div>
                   <p>
                     <a
                       href={site.instagram.url}
