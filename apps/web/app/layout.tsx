@@ -54,8 +54,8 @@ export default function RootLayout({
                   <div className="grid gap-y-4">
                     <p>
                       Péter Révész (b. 2000) is a Hungarian photographer whose
-                      work is driven by instinct, taste and tension. Raw,
-                      sensual and edgy, it moves between stillness and
+                      work is driven by instinct, taste and tension. Raw and
+                      sensual, it moves between stillness and
                       restlessness, intimacy and distance, softness and grit.
                       His visual language is rooted in vulnerability and a
                       sense of the untamed, shaped by a childhood spent among
