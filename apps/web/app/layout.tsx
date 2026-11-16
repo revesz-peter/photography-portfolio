@@ -55,8 +55,8 @@ export default function RootLayout({
                     <p>
                       Péter Révész (b. 2000) is a Hungarian photographer whose
                       work is driven by instinct, taste and tension. Raw and
-                      sensual, it moves between stillness and
-                      restlessness, intimacy and distance, softness and grit.
+                      sensual, it moves between intimacy and distance,
+                      softness and grit.
                       His visual language is rooted in vulnerability and a
                       sense of the untamed, shaped by a childhood spent among
                       horses and open land.
