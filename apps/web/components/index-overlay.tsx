@@ -98,6 +98,7 @@ function ProjectPanel({
 }) {
   const [viewing, setViewing] = React.useState<number | null>(null)
   const count = project.photos.length
+  const { ref, rows } = useJustifiedRows(project.photos.map(aspectRatio))
 
   return (
     <div
@@ -108,33 +109,44 @@ function ProjectPanel({
         title={<Caption number={number(index)} title={project.title} />}
       />
 
-      {/* Each photo grows in proportion to its ratio from a shared row height (--row),
-          so every row is one height and fills the width without cropping. */}
-      <ul className="flex flex-wrap gap-[13px] px-[13px] pt-[13px] [--row:28svh] sm:[--row:44svh]">
-        {project.photos.map((photo, i) => {
-          const ratio = aspectRatio(photo)
-          return (
-            <li
-              key={photo.id}
-              style={{ flex: `${ratio} 1 calc(var(--row) * ${ratio})` }}
-            >
-              <button
-                type="button"
-                onClick={() => setViewing(i)}
-                aria-label={`View image ${i + 1} of ${count}`}
-                className="block w-full"
-              >
-                <Frame
-                  photo={photo}
-                  sizes={`(min-width: 640px) ${Math.ceil(44 * ratio * 1.25)}vh, 50vw`}
-                />
-              </button>
-            </li>
-          )
-        })}
-        {/* Soaks up the leftover width so a short last row keeps the row height. */}
-        <li aria-hidden className="grow-[1000] basis-0" />
-      </ul>
+      <div
+        ref={ref}
+        className="flex flex-col gap-[13px] px-[13px] pt-[13px]"
+      >
+        {rows.map((row, r) => (
+          <ul key={r} className="flex gap-[13px]">
+            {row.items.map((i) => {
+              const photo = project.photos[i]!
+              const ratio = aspectRatio(photo)
+              return (
+                <li
+                  key={photo.id}
+                  // Full rows share the width by ratio, so every photo in the row is
+                  // one height. The last row isn't stretched: it takes the height of
+                  // the row above, so it matches instead of shrinking.
+                  style={
+                    row.height === null
+                      ? { flex: `${ratio} 1 0` }
+                      : { flex: "none", width: row.height * ratio }
+                  }
+                >
+                  <button
+                    type="button"
+                    onClick={() => setViewing(i)}
+                    aria-label={`View image ${i + 1} of ${count}`}
+                    className="block w-full"
+                  >
+                    <Frame
+                      photo={photo}
+                      sizes={`(min-width: 640px) ${Math.ceil(44 * ratio * 1.25)}vh, 50vw`}
+                    />
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        ))}
+      </div>
 
       <div
         className={cn(
@@ -162,6 +174,76 @@ function ProjectPanel({
       )}
     </div>
   )
+}
+
+const GAP = 13
+
+type Row = {
+  items: number[]
+  // null: a full row, stretched edge to edge. A number: the last row's height in px.
+  height: number | null
+}
+
+// Splits photos into rows from a target row height (28% of the screen height on
+// phones, 44% from 640px up): a row takes photos while they fit, then is stretched
+// to the full width. The last row keeps the height of the row above it.
+function justify(ratios: number[], width: number, target: number): Row[] {
+  const rows: Row[] = []
+  let row: number[] = []
+  let sum = 0
+  let lastHeight = target
+
+  const rowHeight = (s: number, n: number) => (width - GAP * (n - 1)) / s
+
+  ratios.forEach((ratio, i) => {
+    const fits = (sum + ratio) * target + GAP * row.length <= width
+    if (row.length && !fits) {
+      lastHeight = rowHeight(sum, row.length)
+      rows.push({ items: row, height: null })
+      row = []
+      sum = 0
+    }
+    row.push(i)
+    sum += ratio
+  })
+
+  if (row.length) {
+    // Never wider than the screen, e.g. a single row of small photos.
+    const height = Math.min(lastHeight, rowHeight(sum, row.length))
+    rows.push({ items: row, height })
+  }
+  return rows
+}
+
+function useJustifiedRows(ratios: number[]) {
+  const ref = React.useRef<HTMLDivElement>(null)
+  const [size, setSize] = React.useState<{ width: number; target: number }>()
+
+  React.useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    function measure() {
+      if (!el) return
+      const style = getComputedStyle(el)
+      const width =
+        el.clientWidth -
+        parseFloat(style.paddingLeft) -
+        parseFloat(style.paddingRight)
+      const share = window.matchMedia("(min-width: 640px)").matches ? 0.44 : 0.28
+      setSize({ width, target: window.innerHeight * share })
+    }
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(el)
+    window.addEventListener("resize", measure)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener("resize", measure)
+    }
+  }, [])
+
+  const rows = size ? justify(ratios, size.width, size.target) : []
+  return { ref, rows }
 }
 
 // One photo of a project, fitted to the screen. Click the halves or use the arrow
